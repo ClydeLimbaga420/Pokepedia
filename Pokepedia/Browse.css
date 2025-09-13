@@ -18,7 +18,7 @@
 .logo {
     padding: inherit;
     margin: auto;
-    width: 200px;
+    width: 400px;
     display: block;
     
 }
@@ -56,3 +56,4 @@ span{
     justify-content: center;
     flex-wrap: wrap;
 }
+
