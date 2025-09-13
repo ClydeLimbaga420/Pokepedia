@@ -1,0 +1,34 @@
+@font-face {
+    font-family: 'myFont';
+    src: url(Pixel.otf);
+}
+*{
+    margin: 0;
+    padding: 0;
+    font-family:'myFont';
+    width: 100px;
+    height: 100px;
+    background: gray;
+    background-size: cover;
+    background-position: center;
+}
+.Generation1{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 20px;
+}
+.Generation1 img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 2px solid;
+    border-radius: 8px;
+    border-color: black;
+    background-color: yellow;
+}
+p{
+    margin-top: 8px;
+    font-size: 24px;
+    color: black;
+}
