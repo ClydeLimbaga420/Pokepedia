@@ -1,0 +1,167 @@
+@font-face{
+    font-family: myFont;
+    src: url(Pixel.otf);
+}
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'myFont';
+}
+    .banner {
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(to bottom, white 0%, red 100%);
+    
+    background-size: cover;
+    background-position: center;
+    }
+    .navbar {
+        width: 85%;
+        margin: auto;
+        padding:20px 0;
+        display: flex;
+        align-items: center;;
+        justify-content: space-between;
+    }
+    .logo {
+        width: 120px;
+        
+      
+    }
+    .navbar ul li {
+        list-style: none;
+        display: inline-block;
+        margin: 0 20px;
+        position: relative;
+        font-size: 25px;
+        
+        
+    }
+    .navbar ul li a{
+        text-decoration: none;
+        color: red;
+        
+        
+    }
+    .navbar ul li::after{
+        content: '';
+        height: 3px;
+        width: 0;
+        background: #960a00;
+        position: absolute;
+        left: 0;
+        bottom: -10px;
+        transition: 0.5s;
+        
+    }
+    .navbar ul li:hover::after {
+        width: 100%;
+        
+    }
+    .content {
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        text-align: center;
+        color: #fff;
+
+    }
+    .content h1{
+        font-size: 150px;
+        margin-top: 80px;
+        color: red;
+        -webkit-text-stroke-width: 2px;
+        -webkit-text-stroke-color: black;
+
+    }
+    .content p {
+        margin: 20px auto;
+        font-weight: 100;
+        line-height: 25px;
+        font-size: 25px;
+        color: black;
+    }
+    button {
+        width: 200px;
+        padding: 15px 0;
+        text-align: center;
+        margin: 20px 10px;
+        border-radius: 25px;
+        font-weight: bold;
+        border: 2px solid black;
+        background: transparent;
+        color: black;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        font-size: 20px;
+    }
+    span{
+        background: lightblue;
+        height: 100%;
+        width: 0;
+        border-radius: 25px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        Z-index: -1;
+        transition: 0.5s;
+
+    }
+    button:hover span{
+        width: 100%;
+    }
+    button:hover {
+        border:color(from color srgb r g b);
+    }
+    
+
+.search-form {
+    position:static;
+    display: flex;
+    align-items: 100px right;
+}
+
+.search-form input[type="text"] {
+    height: 40px;
+    width: 40px;
+    border: none;
+    outline: none;
+    padding: 0 15px 0 40px;
+    border-radius: 10px;
+    background-color: white;
+    transition: width 0.4s ease;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(202, 4, 4, 0.2);
+    color: #333;
+    background-image: url('Logo.png');
+    background-repeat: no-repeat;
+    background-position: -35px center;
+    background-size: 70px;
+}
+
+
+.search-form input[type="text"]:focus {
+    width: 200px;
+    background-color: #fff;
+}
+
+
+.search-form input[type="text"]:hover {
+    cursor:text;
+    width: 200px;
+}
+
+
+@media (max-width: 600px) {
+    .search-form input[type="text"] {
+        width: 30px;
+    }
+
+    .search-form input[type="text"]:focus,
+    .search-form input[type="text"]:hover {
+        width: 150px;
+    }
+}
+
