@@ -31,4 +31,12 @@ p{
     margin-top: 8px;
     font-size: 24px;
     color: black;
+
+}
+@media (max-width: 600px) {
+    .search-form input[type="text"] {
+        width: 30px;
+    }
+
+    
 }
