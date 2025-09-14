@@ -56,3 +56,10 @@ span{
     justify-content: center;
     flex-wrap: wrap;
 }
+@media (max-width: 600px) {
+    .search-form input[type="text"] {
+        width: 30px;
+    }
+
+  
+}
