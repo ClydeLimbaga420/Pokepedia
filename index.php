@@ -14,7 +14,7 @@ $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>Poképedia | Digital Encyclopedia</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/scss/style.scss">
 </head>
 <body>
 
@@ -24,7 +24,7 @@ $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <main class="pokemon-grid">
         <?php foreach ($pokemonList as $row): 
-            // Define the image URL using the ID from the database
+            
             $imagePath = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" . $row['pokemon_id'] . ".png";
         ?>
             <a href="pokemon-detail.php?id=<?= $row['pokemon_id'] ?>" class="card-link">
