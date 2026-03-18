@@ -1,8 +1,10 @@
 <?php
 include 'config.php';
 
+// Get ID, default to 1 if not set
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
 
+// Fetch Data
 $stmt = $pdo->prepare("SELECT * FROM pokemon WHERE pokemon_id = ?");
 $stmt->execute([$id]);
 $pokemon = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -15,6 +17,7 @@ if (!$pokemon) {
 $primaryType = strtolower($pokemon['type1']);
 $imagePath = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" . $pokemon['pokemon_id'] . ".png";
 
+// Math for the progress bars
 function getStatPercent($value) {
     return ($value / 255) * 100;
 }
@@ -26,24 +29,26 @@ function getStatPercent($value) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= ucfirst($pokemon['name']) ?> | Poképedia</title>
-    <link rel="stylesheet" href="assets/scss/style.scss">
+    
+    <link rel="stylesheet" href="assets/css/style.css">
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-
 </head>
-<body>
+<body class="detail-page type-bg-<?= $primaryType ?>">
     
     <div class="container">
         <a href="index.php" class="back-btn"> ← Back to Gallery</a>
         
         <div class="pokemon-container">
-
             <div class="visual-section">
-                <div class="main-circle"></div> <img src="<?= $imagePath ?>" alt="<?= $pokemon['name'] ?>" class="main-artwork">
+                <div class="main-circle"></div> 
+                <img src="<?= $imagePath ?>" alt="<?= $pokemon['name'] ?>" class="main-artwork">
                 <h1 class="pokemon-name"><?= ucfirst($pokemon['name']) ?></h1>
+                
                 <div class="type-pills">
                     <span class="type-pill <?= $primaryType ?>"><?= $pokemon['type1'] ?></span>
                     <?php if(!empty($pokemon['type2'])): ?>
-                        <span class="pill <?= strtolower($pokemon['type2']) ?>"><?= $pokemon['type2'] ?></span>
+                        <span class="type-pill <?= strtolower($pokemon['type2']) ?>"><?= $pokemon['type2'] ?></span>
                     <?php endif; ?>
                 </div>
             </div>
@@ -74,15 +79,14 @@ function getStatPercent($value) {
                     </div>
                 </div>
 
-                <div class="details=grid">
+                <div class="details-grid">
                     <div class="mini-card">
                         <span>Height</span>
                         <p><?= $pokemon['height'] / 10 ?> m</p>
                     </div>
-                    <div class="mini-card"?>
+                    <div class="mini-card">
                         <span>Weight</span>
                         <p><?= $pokemon['weight'] / 10 ?> kg</p>
-
                     </div>
                     <div class="mini-card">
                         <span>Ability</span>

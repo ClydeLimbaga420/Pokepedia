@@ -1,8 +1,7 @@
 <?php 
-// 1. Include the database connection at the very top
+
 include 'config.php'; 
 
-// 2. Fetch the data
 $query = "SELECT * FROM pokemon ORDER BY pokemon_id ASC";
 $stmt = $pdo->prepare($query);
 $stmt->execute();
@@ -14,7 +13,7 @@ $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>Poképedia | Digital Encyclopedia</title>
-    <link rel="stylesheet" href="assets/scss/style.scss">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
