@@ -39,8 +39,10 @@ body {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.5s ease;
     overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
 }
 
 .poke-card:hover {
@@ -113,14 +115,30 @@ body {
 .normal {
      background: #95a5a6; box-shadow: 0 0 10px #95a5a666;
      }
-.fighting { background: #c0392b; box-shadow: 0 0 10px #c0392b66; }
-.flying { background: #7f8c8d; box-shadow: 0 0 10px #7f8c8d66; }
-.poison { background: #8e44ad; box-shadow: 0 0 10px #8e44ad66; }
-.ground { background: #d35400; box-shadow: 0 0 10px #d3540066; }
-.rock { background: #7b8d93; box-shadow: 0 0 10px #7b8d9366; }
-.bug { background: #27ae60; box-shadow: 0 0 10px #27ae6066; }
-.ghost { background: #4b5a94; box-shadow: 0 0 10px #4b5a9466; }
-.steel { background: #bdc3c7; box-shadow: 0 0 10px #bdc3c766; }
+.fighting {
+     background: #c0392b; box-shadow: 0 0 10px #c0392b66; 
+    }
+.flying {
+     background: #7f8c8d; box-shadow: 0 0 10px #7f8c8d66; 
+    }
+.poison {
+     background: #8e44ad; box-shadow: 0 0 10px #8e44ad66; 
+    }
+.ground {
+     background: #d35400; box-shadow: 0 0 10px #d3540066; 
+    }
+.rock {
+     background: #7b8d93; box-shadow: 0 0 10px #7b8d9366; 
+    }
+.bug {
+     background: #27ae60; box-shadow: 0 0 10px #27ae6066; 
+    }
+.ghost {
+     background: #4b5a94; box-shadow: 0 0 10px #4b5a9466; 
+    }
+.steel 
+{ background: #bdc3c7; box-shadow: 0 0 10px #bdc3c766; 
+}
 
 .detail-page {
     min-height: 100vh;

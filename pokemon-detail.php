@@ -1,10 +1,8 @@
 <?php
 include 'config.php';
 
-// Get ID, default to 1 if not set
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
 
-// Fetch Data
 $stmt = $pdo->prepare("SELECT * FROM pokemon WHERE pokemon_id = ?");
 $stmt->execute([$id]);
 $pokemon = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -17,7 +15,6 @@ if (!$pokemon) {
 $primaryType = strtolower($pokemon['type1']);
 $imagePath = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" . $pokemon['pokemon_id'] . ".png";
 
-// Math for the progress bars
 function getStatPercent($value) {
     return ($value / 255) * 100;
 }

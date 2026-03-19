@@ -2,10 +2,26 @@
 
 include 'config.php'; 
 
-$query = "SELECT * FROM pokemon ORDER BY pokemon_id ASC";
-$stmt = $pdo->prepare($query);
-$stmt->execute();
-$pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+$type = isset($_GET['type']) ? $_GET['type'] : '';
+
+$query = "SELECT * FROM pokemon WHERE name LIKE :search";
+$params = [':search' => "%$search%"];
+
+if (!empty($type)) {
+    $query .= " AND (type1 = :type OR type2 = :type)";
+    $params['type'] = $type;
+}
+
+$query .= " ORDER BY pokemon_id ASC";
+
+try {
+    $stmt = $pdo->prepare($query);
+    $stmt->execute($params);
+    $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Database Error: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -16,6 +32,34 @@ $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+
+    <section class="search-container">
+        <form action="index.php" method="GET" class="search-form">
+            <input type="text" name="search" placeholder="Search Pokémon by name..." value="<?= $_GET['search'] ?? '' ?>">
+                <select name="type">
+                    <option value="">All Types</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Fire">Fire</option>
+                    <option value="Water">Water</option>
+                    <option value="Electric">Electric</option>
+                    <option value="Grass">Grass</option>
+                    <option value="Ice">Ice</option>
+                    <option value="Fighting">Fighting</option>
+                    <option value="Poison">Poison</option>
+                    <option value="Ground">Ground</option>
+                    <option value="Flying">Flying</option>
+                    <option value="Psychic">Psychic</option>
+                    <option value="Bug">Bug</option>
+                    <option value="Rock">Rock</option>
+                    <option value="Ghost">Ghost</option>
+                    <option value="Dragon">Dragon</option>
+                    <option value="Dark">Dark</option>
+                    <option value="Steel">Steel</option>
+                    <option value="Fairy">Fairy</option>
+                </select>
+        </form>
+    </section>
+
 
     <header class="main-header">
         <h1>Poképedia</h1>
@@ -53,4 +97,6 @@ $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </main>
 
 </body>
+
+<script src="assets/js/main.js"></script>
 </html>
