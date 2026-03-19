@@ -97,6 +97,16 @@ $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
             left: 100%;
         }
 
+        .id-badge {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: rgba(255,255,255,0.1);
+            letter-spacing: 2px;
+        }
+
         .fire { 
     background: #ff421c; box-shadow: 0 0 10px #ff421c66; 
 }
@@ -162,12 +172,8 @@ $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <section class="search-container">
         <form class="search-form" method="GET">
             <input type="text" name="search" placeholder="Search Pokémon..." value="<?= htmlspecialchars($search) ?>">
-            <select name="type">
+            <select name="type" onchange="this.form.submit()">
                 <option value="">All Types</option>
-                <option value="fire">Fire</option>
-                <option value="water">Water</option>
-                <option value="grass">Grass</option>
-                <option value="electric">Electric</option>
             </select>
             <button type="submit">Search</button>
         </form>
