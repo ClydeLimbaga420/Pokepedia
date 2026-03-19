@@ -278,3 +278,76 @@ body {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-20px); }
 }
+
+
+.type-bg-fire { background: radial-gradient(circle at center, #8a2313 0%, #121212 100%); }
+.type-bg-water { background: radial-gradient(circle at center, #134e8a 0%, #121212 100%); }
+.type-bg-grass { background: radial-gradient(circle at center, #1c5d19 0%, #121212 100%); }
+.type-bg-electric { background: radial-gradient(circle at center, #7a6b12 0%, #121212 100%); }
+.type-bg-psychic { background: radial-gradient(circle at center, #7a126b 0%, #121212 100%); }
+.type-bg-ice { background: radial-gradient(circle at center, #2e5d8a 0%, #121212 100%); }
+.type-bg-dragon { background: radial-gradient(circle at center, #1a2e5d 0%, #121212 100%); }
+.type-bg-dark { background: radial-gradient(circle at center, #1a2e5d 0%, #121212 100%); }
+.type-bg-fairy { background: radial-gradient(circle at center, #7a126b 0%, #121212 100%); }
+.type-bg-normal { background: radial-gradient(circle at center, #5d5d5d 0%, #121212 100%); }
+.type-bg-fighting { background: radial-gradient(circle at center, #7a1212 0%, #121212 100%); }
+.type-bg-flying { background: radial-gradient(circle at center, #5d5d5d 0%, #121212 100%); }
+.type-bg-poison { background: radial-gradient(circle at center, #5d127a 0%, #121212 100%); }
+.type-bg-ground { background: radial-gradient(circle at center, #7a3d12 0%, #121212 100%); }
+.type-bg-rock { background: radial-gradient(circle at center, #5d5d5d 0%, #121212 100%); }
+.type-bg-bug { background: radial-gradient(circle at center, #127a5d 0%, #121212 100%); }
+.type-bg-ghost { background: radial-gradient(circle at center, #1a2e5d 0%, #121212 100%); }
+.type-bg-steel { background: radial-gradient(circle at center, #5d5d5d 0%, #121212 100%); }
+
+/* Search Section Styling */
+.search-container {
+    max-width: 800px;
+    margin: 40px auto;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.search-form {
+    display: flex;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.search-form input, 
+.search-form select {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.search-form input { flex: 2; border-right: 1px solid rgba(255,255,255,0.1); }
+.search-form select { flex: 1; cursor: pointer; }
+
+.search-form button {
+    background: #ff421c; /* A nice Poké-red */
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 40px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.search-form button:hover {
+    background: #ff5f3e;
+    box-shadow: 0 0 15px rgba(255, 66, 28, 0.4);
+}
+
+/* Make sure the select options aren't invisible (white on white) */
+.search-form select option {
+    background: #1a1a1a;
+    color: white;
+}
