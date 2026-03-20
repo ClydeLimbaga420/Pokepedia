@@ -18,6 +18,28 @@ $imagePath = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/p
 function getStatPercent($val) {
     return ($val / 255) * 100;
 }
+
+$stats = [
+                    'HP' => $pokemon['hp'],
+                    'Attack' => $pokemon['attack'],
+                    'Defense' => $pokemon['defense'],
+                    'Sp. Atk' => $pokemon['special_attack'],
+                    'Sp. Def' => $pokemon['special_defense'],
+                    'Speed' => $pokemon['speed']
+                ];
+
+                $baseStatTotal = array_sum($stats);
+
+                if ($baseStatTotal >= 600) {
+                    $tier = "S-Tier";
+                    $tierColor = "#ff421c";
+                } elseif ($baseStatTotal >= 500) {
+                        $tier = "A-Tier";
+                        $tierColor = "#f1c40f";
+                    } else {
+                        $tier = "B-Tier";
+                        $tierColor = "#95a5a6";
+                    }
 ?>
 
 <!DOCTYPE html>
@@ -212,6 +234,39 @@ function getStatPercent($val) {
             transform: scale(1.1); 
         }
 
+        .detail-type-pill.fire     { background: var(--fire);     box-shadow: 0 0 20px rgba(255, 66, 28, 0.5); }
+        .detail-type-pill.water    { background: var(--water);    box-shadow: 0 0 20px rgba(41, 128, 239, 0.5); }
+        .detail-type-pill.grass    { background: var(--grass);    box-shadow: 0 0 20px rgba(98, 188, 90, 0.5); }
+        .detail-type-pill.electric { background: var(--electric); box-shadow: 0 0 20px rgba(241, 196, 15, 0.5); color: #000; }
+        .detail-type-pill.ice      { background: var(--ice);      box-shadow: 0 0 20px rgba(93, 173, 226, 0.5); }
+        .detail-type-pill.fighting { background: var(--fighting); box-shadow: 0 0 20px rgba(192, 57, 43, 0.5); }
+        .detail-type-pill.poison   { background: var(--poison);   box-shadow: 0 0 20px rgba(142, 68, 173, 0.5); }
+        .detail-type-pill.ground   { background: var(--ground);   box-shadow: 0 0 20px rgba(211, 84, 0, 0.5); }
+        .detail-type-pill.flying   { background: var(--flying);   box-shadow: 0 0 20px rgba(127, 140, 141, 0.5); }
+        .detail-type-pill.psychic  { background: var(--psychic);  box-shadow: 0 0 20px rgba(155, 89, 182, 0.5); }
+        .detail-type-pill.bug      { background: var(--bug);      box-shadow: 0 0 20px rgba(39, 174, 96, 0.5); }
+        .detail-type-pill.rock     { background: var(--rock);     box-shadow: 0 0 20px rgba(123, 141, 147, 0.5); }
+        .detail-type-pill.ghost    { background: var(--ghost);    box-shadow: 0 0 20px rgba(75, 90, 148, 0.5); }
+        .detail-type-pill.dragon   { background: var(--dragon);   box-shadow: 0 0 20px rgba(80, 61, 163, 0.5); }
+        .detail-type-pill.dark     { background: var(--dark);     box-shadow: 0 0 20px rgba(44, 62, 80, 0.5); }
+        .detail-type-pill.steel    { background: var(--steel);    box-shadow: 0 0 20px rgba(189, 195, 199, 0.5); color: #000; }
+        .detail-type-pill.fairy    { background: var(--fairy);    box-shadow: 0 0 20px rgba(233, 30, 99, 0.5); }
+        .detail-type-pill.normal   { background: var(--normal);   box-shadow: 0 0 20px rgba(149, 165, 166, 0.5); }
+
+        .detail-type-pill {
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 5px;
+            color: white;
+            background: #333;
+        }
+
         @keyframes float { 0%, 100% { 
             transform: translateY(0); } 50% { 
                 transform: translateY(-25px); } }
@@ -248,26 +303,39 @@ function getStatPercent($val) {
             </div>
             <span class="id-label">#<?= sprintf('%03d', $pokemon['pokemon_id']) ?></span>
             <h1 class="pokemon-name"><?= $pokemon['name'] ?></h1>
-            <div style="margin-top: 15px;">
-                <span style="background: var(--<?= $primaryType ?>); padding: 8px 25px; border-radius: 50px; font-weight: bold; text-transform: uppercase; font-size: 0.9rem;">
+
+            <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+                <span class="detail-type-pill <?= $primaryType ?>">
                     <?= $pokemon['type1'] ?>
                 </span>
+
+                <?php if(!empty($pokemon['type2'])): ?>
+                    <span class="detail-type-pill <?= strtolower($pokemon['type2']) ?>">
+                        <?= $pokemon['type2'] ?>
+                    </span>
+                <?php endif; ?>
             </div>
         </div>
 
         <div class="info-section">
             <div class="glass-card">
                 <h2 style="margin-top: 0; margin-bottom: 30px; font-weight: 300;">Base Statistics</h2>
+
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;">
+                    <h2 style="margin: 0; font-weight: 300;">Base Statistics</h2>
+                    <div style="text-align: right">
+                        <span style="font-size: 0.7rem; opacity: 0.5; display: block">Base Stat Total</span>
+                        <span style="font-size: 1.5rem; font-weight: 800; color: <?= $tierColor ?>;"><?= $baseStatTotal ?></span>
+                        <span style="font-size: 0.8rem; font-weight: 600; margin-left: 5px; opacity: 0.8;"><?= $tier ?></span>
+                    </div>
+
+                </div>
                 
                 <?php 
-                $stats = [
-                    'HP' => $pokemon['hp'],
-                    'Attack' => $pokemon['attack'],
-                    'Defense' => $pokemon['defense'],
-                    'Sp. Atk' => $pokemon['special_attack'],
-                    'Sp. Def' => $pokemon['special_defense'],
-                    'Speed' => $pokemon['speed']
-                ];
+                
+                
+
+
 
                 foreach($stats as $label => $value): ?>
                     <div class="stat-row">

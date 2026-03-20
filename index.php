@@ -66,8 +66,14 @@ $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .poke-card img { width: 130px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.4)); }
         
         .type-tag {
-            display: inline-block; padding: 3px 10px; border-radius: 5px;
-            font-size: 0.7rem; text-transform: uppercase; font-weight: bold; margin: 5px 2px;
+            background: #444;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin: 2px;
+            display: inline-block;
         }
 
         header h1 {
@@ -180,29 +186,34 @@ $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </section>
 
     <main class="pokemon-grid">
-    <?php if (count($pokemonList) > 0): ?>
-        <?php foreach ($pokemonList as $row): ?>
-            <a href="pokemon-detail.php?id=<?= $row['pokemon_id'] ?>" class="card-link">
-                <div class="poke-card">
-                    <span class="id-badge">#<?= sprintf('%03d', $row['pokemon_id']) ?></span>
-                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/<?= $row['pokemon_id'] ?>.png" loading="lazy">
-                    <h3><?= ucfirst($row['name']) ?></h3>
-                    <div class="types">
-                        <span class="type-tag <?= strtolower($row['type1']) ?>"><?= $row['type1'] ?></span>
-                        <?php if(!empty($row['type2'])): ?>
-                            <span class="type-tag <?= strtolower($row['type2']) ?>"><?= $row['type2'] ?></span>
-                        <?php endif; ?>
+        <?php if (count($pokemonList) >0): ?>
+            <?php foreach ($pokemonList as $row): ?>
+                <a href="pokemon-detail.php?id=<?= $row['pokemon_id'] ?>" class="card-link">
+                    <div class="poke-card">
+                        <span class="id-badge">#<?= sprintf('%03d', $row['pokemon_id']) ?></span>
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/<?= $row['pokemon_id'] ?>.png" loading="lazy">
+
+                        <h3><?= ucfirst($row['name']) ?></h3>
+
+                        <div class="types">
+                            <span class="type-tag <?= strtolower($row['type1']) ?>">
+                                <?= $row['type1'] ?>
+                            </span>
+
+                            <?php if (!empty($row['type2'])): ?>
+                                <span class="type-tag <?= strtolower($row['type2']) ?>">
+                                    <?= $row['type2'] ?>
+                                </span>
+                                <?php endif; ?>
+                        </div>
                     </div>
-                </div>
-            </a>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <div style="grid-column: 1/-1; text-align: center; padding: 50px; opacity: 0.5;">
-            <p style="font-size: 1.5rem;">No Pokémon found matching your search...</p>
-            <a href="index.php" style="color: var(--primary); text-decoration: none;">View All Pokémon</a>
-        </div>
-    <?php endif; ?>
-</main>
+                </a>
+                <?php endforeach; ?>
+                <?php else: ?>
+                    <p style="text-align: center; grid-column: 1/-1;">No Pokémon Found.</p>
+                <?php endif; ?>
+
+    </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
