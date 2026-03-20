@@ -1,22 +1,31 @@
 <?php
 include 'config.php';
 
-// Search Logic
 $search = isset($_GET['search']) ? $_GET['search'] : '';
-$type   = isset($_GET['type']) ? $_GET['type'] : '';
+$typeFilter = isset($_GET['type']) ? $_GET['type'] : '';
 
-$query = "SELECT * FROM pokemon WHERE name LIKE :search";
-$params = [':search' => "%$search%"];
+$types = ['Fire', 'Water', 'Grass', 'Electric', 'Psychic', 'Ice', 'Dragon', 'Dark', 'Fairy', 'Normal', 'Fighting', 'Poison', 'Ground', 'Rock', 'Bug', 'Ghost', 'Steel', 'Flying'  ];
 
-if (!empty($type)) {
-    $query .= " AND (type1 = :type OR type2 = :type)";
-    $params[':type'] = $type;
+$query = "SELECT * FROM pokemon WHERE 1=1";
+$params = [];
+
+if (!empty($search)) {
+    $query .= " AND name LIKE :search";
+    $params[':search'] = "%$search%";
 }
+
+if (!empty($typeFilter)) {
+    $query .= " AND (type1 = :type OR type2 = :type)";
+    $params[':type'] = $typeFilter;
+}
+
 $query .= " ORDER BY pokemon_id ASC";
 
 $stmt = $pdo->prepare($query);
 $stmt->execute($params);
 $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$resultCount = count($pokemonList);
 ?>
 
 <!DOCTYPE html>
@@ -27,14 +36,43 @@ $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        :root { --bg: #0f0f0f; --card: rgba(255, 255, 255, 0.05); --primary: #ff421c; }
+        :root { --bg: #0f0f0f; --card: rgba(255, 255, 255, 0.05); --primary: #ff421c; 
+    --fire: #ff421c; 
+            --water: #2980ef; 
+            --grass: #62bc5a; 
+            --electric: #f1c40f;
+            --psychic: #9b59b6; 
+            --ice: #5dade2; 
+            --dragon: #503da3; 
+            --dark: #2c3e50;
+            --fairy: #e91e63; 
+            --normal: #95a5a6; 
+            --fighting: #c0392b; 
+            --poison: #8e44ad;
+            --ground: #d35400; 
+            --rock: #7b8d93; 
+            --bug: #27ae60; 
+            --ghost: #4b5a94; 
+            --steel: #bdc3c7;
+            --flying: #7f8c8d;}
         
         body { 
             background: var(--bg); color: white; font-family: 'Poppins', sans-serif; 
             margin: 0; padding: 20px; overflow-x: hidden;
         }
 
-        
+        .search-form select {
+            background: rgba(255,255,255,0.05) !important;
+            border-radius: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .search-form select option {
+            background: #1a1a1a;
+            color: white;
+        }
+
         .search-container { max-width: 700px; margin: 40px auto; }
         .search-form { 
             display: flex; background: var(--card); padding: 8px; 
@@ -48,7 +86,6 @@ $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
             padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: 600;
         }
 
-        /* Grid Design */
         .pokemon-grid {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 25px; max-width: 1200px; margin: 0 auto;
@@ -112,6 +149,63 @@ $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
             color: rgba(255,255,255,0.1);
             letter-spacing: 2px;
         }
+
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            overflow-x: auto;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            background: rgba(15, 15, 15, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            scrollbar-width: none;
+        }
+
+        .filter-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-btn {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+        }
+
+        .filter-btn.active.fire     { background: var(--fire); border-color: white; color: white; box-shadow: 0 0 15px var(--fire); }
+        .filter-btn.active.water    { background: var(--water); border-color: white; color: white; box-shadow: 0 0 15px var(--water); }
+        .filter-btn.active.grass    { background: var(--grass); border-color: white; color: white; box-shadow: 0 0 15px var(--grass); }
+        .filter-btn.active.electric { background: var(--electric); border-color: white; color: #000; box-shadow: 0 0 15px var(--electric); }
+        .filter-btn.active.psychic  { background: var(--psychic); border-color: white; color: white; box-shadow: 0 0 15px var(--psychic); }
+        .filter-btn.active.ice      { background: var(--ice); border-color: white; color: white; box-shadow: 0 0 15px var(--ice); }
+        .filter-btn.active.dragon   { background: var(--dragon); border-color: white; color: white; box-shadow: 0 0 15px var(--dragon); }
+        .filter-btn.active.dark     { background: var(--dark); border-color: white; color: white; box-shadow: 0 0 15px var(--dark); }
+        .filter-btn.active.fairy    { background: var(--fairy); border-color: white; color: white; box-shadow: 0 0 15px var(--fairy); }
+        .filter-btn.active.normal   { background: var(--normal); border-color: white; color: white; box-shadow: 0 0 15px var(--normal); }
+        .filter-btn.active.fighting { background: var(--fighting); border-color: white; color: white; box-shadow: 0 0 15px var(--fighting); }
+        .filter-btn.active.poison   { background: var(--poison); border-color: white; color: white; box-shadow: 0 0 15px var(--poison); }
+        .filter-btn.active.ground   { background: var(--ground); border-color: white; color: white; box-shadow: 0 0 15px var(--ground); }
+        .filter-btn.active.rock     { background: var(--rock); border-color: white; color: white; box-shadow: 0 0 15px var(--rock); }
+        .filter-btn.active.bug      { background: var(--bug); border-color: white; color: white; box-shadow: 0 0 15px var(--bug); }
+        .filter-btn.active.ghost    { background: var(--ghost); border-color: white; color: white; box-shadow: 0 0 15px var(--ghost); }
+        .filter-btn.active.steel    { background: var(--steel); border-color: white; color: #000; box-shadow: 0 0 15px var(--steel); }
+        .filter-btn.active.flying   { background: var(--flying); border-color: white; color: white; box-shadow: 0 0 15px var(--flying); }
+                
+        .filter-btn.active:not([class*=" "]) {
+            background: white;
+            color:black;
+            border-color: white;
+        }
+
 
         .fire { 
     background: #ff421c; box-shadow: 0 0 10px #ff421c66; 
@@ -178,12 +272,40 @@ $pokemonList = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <section class="search-container">
         <form class="search-form" method="GET">
             <input type="text" name="search" placeholder="Search Pokémon..." value="<?= htmlspecialchars($search) ?>">
-            <select name="type" onchange="this.form.submit()">
+            <select name="type" onchange="this.form.submit()">  
                 <option value="">All Types</option>
+                <?php foreach ($types as $t): ?>
+                    <option value="<?= $t ?>" <?= ($typeFilter == $t) ? 'selected' : '' ?>>
+                        <?= $t ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
             <button type="submit">Search</button>
         </form>
     </section>
+
+    <div class="filter-container">
+        <a href="index.php" class="filter-btn <?= !$typeFilter ? 'active' : '' ?>">ALL</a>
+
+        <?php
+        
+        foreach ($types as $t):
+        ?>
+
+            <a href="index.php?type=<?= $t ?>" class="filter-btn <?= ($typeFilter == $t) ? 'active' : '' ?> <?= strtolower($t) ?>">
+                <?= strtoupper($t) ?>
+
+            </a>
+
+        <?php endforeach; ?>
+    </div>
+
+    <div style="max-width: 1200px; margin: 20px auto; padding: 0 20px; opacity: 0.6; font-size: 0.9rem;">
+        Showing <strong><?= $resultCount ?><strong> Pokémon
+        <?php if($typeFilter) echo "of type <strong>$typeFilter</strong>"; ?>
+        <?php if($search) echo " matching \"<strong>$search</strong>\""; ?>
+
+    </div>
 
     <main class="pokemon-grid">
         <?php if (count($pokemonList) >0): ?>
