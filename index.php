@@ -94,13 +94,57 @@ $resultCount = count($pokemonList);
         .card-link { text-decoration: none; color: inherit; }
         
         .poke-card {
-            background: var(--card); border-radius: 20px; padding: 20px; text-align: center;
-            border: 1px solid rgba(255,255,255,0.1); transition: 0.4s;
-            opacity: 0; transform: translateY(20px); /* For JS animation */
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 40px;
+            padding: 30px 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
-        .poke-card:hover { transform: translateY(-10px); border-color: var(--primary); }
-        .poke-card img { width: 130px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.4)); }
+        .poke-card:hover { 
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .poke-card::after {
+            display: none;
+        }
+
+        .poke-card img { 
+            width: 130px;
+            transition: transform 0.5s ease;
+            z-index: 2;
+            position: relative;
+        }
+
+        .poke-card h3 {
+            margin: 15px 0 5px 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        .poke-card:hover img {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .id-badge {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            left: auto;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
         
         .type-tag {
             background: #444;
@@ -140,6 +184,26 @@ $resultCount = count($pokemonList);
             left: 100%;
         }
 
+        .poke-card::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150px;
+            background: white;
+            filter: blur(50px);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: 0.6s ease;
+            z-index: 1;
+        }
+
+        .poke-card:hover::before {
+            transform: translate(-50%, -70%) scale(1);
+            opacity: 0.1;
+        }
+
         .id-badge {
             position: absolute;
             top: 15px;
@@ -163,6 +227,17 @@ $resultCount = count($pokemonList);
             z-index: 100;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             scrollbar-width: none;
+            cursor:grab;
+            user-select:none;
+            -webkit-user-select: none;
+        }
+
+        .filter-btn {
+            pointer-events: auto;
+        }
+
+        .filter-container:active {
+            cursor: grabbing;
         }
 
         .filter-container::-webkit-scrollbar {
@@ -180,6 +255,84 @@ $resultCount = count($pokemonList);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             
         }
+
+        .filter-container::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 50px;
+            background: linear-gradient(to right, transparent, var(--bg));
+            pointer-events: none;
+        }
+
+        .filter-wrapper {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-arrow {
+            background: rgba(15, 15, 15, 0.8);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            position: absolute;
+            z-index: 110;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .nav-arrow:hover {
+            background: var(--primary);
+            border-color: white;
+            transform: scale(1.1);
+        }
+
+        .nav-arrow.left {
+            left: 10px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-arrow.right {
+            right: 10px;
+        }
+
+        .filter-container {
+            scroll-behavior: smooth;
+            padding: 20px 50px;
+        }
+
+        .poke-card:hover:has(.fire)     { box-shadow: 0 20px 40px rgba(255, 66, 28, 0.25); border-color: var(--fire); }
+        .poke-card:hover:has(.water)    { box-shadow: 0 20px 40px rgba(41, 128, 239, 0.25); border-color: var(--water); }
+        .poke-card:hover:has(.grass)    { box-shadow: 0 20px 40px rgba(98, 188, 90, 0.25); border-color: var(--grass); }
+        .poke-card:hover:has(.electric) { box-shadow: 0 20px 40px rgba(241, 196, 15, 0.25); border-color: var(--electric); }
+        .poke-card:hover:has(.psychic)  { box-shadow: 0 20px 40px rgba(155, 89, 182, 0.25); border-color: var(--psychic); }
+        .poke-card:hover:has(.ice)      { box-shadow: 0 20px 40px rgba(93, 173, 226, 0.25); border-color: var(--ice); }
+        .poke-card:hover:has(.dragon)   { box-shadow: 0 20px 40px rgba(80, 61, 163, 0.25); border-color: var(--dragon); }
+        .poke-card:hover:has(.dark)     { box-shadow: 0 20px 40px rgba(44, 62, 80, 0.25); border-color: var(--dark); }
+        .poke-card:hover:has(.fairy)    { box-shadow: 0 20px 40px rgba(233, 30, 99, 0.25); border-color: var(--fairy); }
+        .poke-card:hover:has(.normal)   { box-shadow: 0 20px 40px rgba(149, 165, 166, 0.25); border-color: var(--normal); }
+        .poke-card:hover:has(.fighting) { box-shadow: 0 20px 40px rgba(192, 57, 43, 0.25); border-color: var(--fighting); }
+        .poke-card:hover:has(.poison)   { box-shadow: 0 20px 40px rgba(142, 68, 173, 0.25); border-color: var(--poison); }
+        .poke-card:hover:has(.ground)   { box-shadow: 0 20px 40px rgba(211, 84, 0, 0.25); border-color: var(--ground); }
+        .poke-card:hover:has(.rock)     { box-shadow: 0 20px 40px rgba(123, 141, 147, 0.25); border-color: var(--rock); }
+        .poke-card:hover:has(.bug)      { box-shadow: 0 20px 40px rgba(39, 174, 96, 0.25); border-color: var(--bug); }
+        .poke-card:hover:has(.ghost)    { box-shadow: 0 20px 40px rgba(75, 90, 148, 0.25); border-color: var(--ghost); }
+        .poke-card:hover:has(.steel)    { box-shadow: 0 20px 40px rgba(189, 195, 199, 0.25); border-color: var(--steel); }
+        .poke-card:hover:has(.flying)   { box-shadow: 0 20px 40px rgba(127, 140, 141, 0.25); border-color: var(--flying); }
 
         .filter-btn.active.fire     { background: var(--fire); border-color: white; color: white; box-shadow: 0 0 15px var(--fire); }
         .filter-btn.active.water    { background: var(--water); border-color: white; color: white; box-shadow: 0 0 15px var(--water); }
@@ -284,20 +437,25 @@ $resultCount = count($pokemonList);
         </form>
     </section>
 
-    <div class="filter-container">
-        <a href="index.php" class="filter-btn <?= !$typeFilter ? 'active' : '' ?>">ALL</a>
+    <div class="filter-wrapper">
+        <button class="nav-arrow left" onclick="scrollFilter(-200)">&#10094;</button>
+            <div class="filter-container" id="type-bar">
+                <a href="index.php" class="filter-btn <?= !$typeFilter ? 'active' : '' ?>">ALL</a>
 
-        <?php
+                    <?php
         
-        foreach ($types as $t):
-        ?>
+                        foreach ($types as $t):
+                    ?>
 
-            <a href="index.php?type=<?= $t ?>" class="filter-btn <?= ($typeFilter == $t) ? 'active' : '' ?> <?= strtolower($t) ?>">
-                <?= strtoupper($t) ?>
+                        <a href="index.php?type=<?= $t ?>" class="filter-btn <?= ($typeFilter == $t) ? 'active' : '' ?> <?= strtolower($t) ?>">
+                        <?= strtoupper($t) ?>
 
-            </a>
+                    </a>
 
-        <?php endforeach; ?>
+                    <?php endforeach; ?>
+            </div>
+
+            <button class="nav-arrow right" onclick="scrollFilter(200)">&#10095;</button>
     </div>
 
     <div style="max-width: 1200px; margin: 20px auto; padding: 0 20px; opacity: 0.6; font-size: 0.9rem;">
@@ -338,15 +496,61 @@ $resultCount = count($pokemonList);
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.poke-card');
-            cards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 40);
-            });
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        const cards = document.querySelectorAll('.poke-card');
+        cards.forEach((card, index) => {
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 40);
         });
-    </script>
+
+        const slider = document.getElementById('type-bar');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        slider.addEventListener('mousedown', (e) => {
+            isDown = true;
+            slider.style.cursor = 'grabbing';
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+        });
+
+        slider.addEventListener('mouseleave', () => { isDown = false; slider.style.cursor = 'grab'; });
+        slider.addEventListener('mouseup', () => { isDown = false; slider.style.cursor = 'grab'; });
+
+        slider.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 2;
+            slider.scrollLeft = scrollLeft - walk;
+        });
+
+        const leftBtn = document.querySelector('.nav-arrow.left');
+        slider.addEventListener('scroll', () => {
+            if (slider.scrollLeft <= 10) {
+                leftBtn.style.opacity = '0';
+                leftBtn.style.pointerEvents = 'none';
+            } else {
+                leftBtn.style.opacity = '1';
+                leftBtn.style.pointerEvents = 'auto';
+            }
+        });
+    });
+
+    
+    function scrollFilter(amount) {
+        const bar = document.getElementById('type-bar');
+        if(bar) {
+            bar.scrollBy({
+                left: amount,
+                behavior: 'smooth'
+            });
+        }
+    }
+</script>
 </body>
 </html>
