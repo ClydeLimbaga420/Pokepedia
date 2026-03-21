@@ -87,44 +87,179 @@ asort($results);
             align-items: center;
             min-height: 100vh;
         }
+
+        .battle-container {
+            width: 90%;
+            max-width: 900px;
+            padding: 40px;
+            position: relative;
+        }
+
+        .battle-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: white;
+            box-shadow: 0 0 15px white;
+            opacity: 0.2;
+            animation: scan 4s linear infinite;
+            z-index: 10;
+        }
+
+        @keyframes scan {
+            0% {
+                top: 0%;
+            } 100% {
+                top: 100%;
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin: 0;
+            font-size: 2.5rem;
+            background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0.3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .battle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .analysis-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analysis-card h4 {
+            margin-top: 0;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            opacity: 0.6;
+            margin-bottom: 20px;
+        }
+
+        .danger {
+            border-top: 4px solid var(--danger);
+        }
+        .safe {
+            border-top: 4px solid var(--safe);
+        }
+        .immunity {
+            border-top: 4px solid var(--immune);
+        }
+
+        .type-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .type-pill {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mult {
+            background: rgba(0,0,0,0.3);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            color: #f1c40f;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            color: white;
+            transform: translateX(-5px);
+        }
+
+
     
     </style>
 
 </head>
 <body>
-    <div class="battle-grid">
-        <?php if(!empty($immune)): ?>
-            <div class="analysis-card immunity">
-                <h4>TOTAL IMMUNITY</h4>
+    <div class="battle-container">
+        <div class="header">
+            <h1>Tactical Analysis</h1>
+            <p style="opacity: 0.4; font-size: 0.8rem;">Pokémon: <?= strtoupper($pokemon['name']) ?></p>
+        </div>
+
+        <div class="battle-grid">
+            <?php if(!empty($immune)): ?>
+                <div class="analysis-card immunity">
+                    <h4>🛡️ TOTAL IMMUNITIES</h4>
+                    <div class="type-list">
+                        <?php foreach($immune as $type => $m): ?>
+                            <span class="type-pill"><?= $type ?></span>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <div class="analysis-card danger">
+                <h4>⚠️ VULNERABILITIES</h4>
                 <div class="type-list">
-                    <?php foreach($immune as $type => $m): ?>
-                        <span class="type-pill <?= $type ?>"><?= $type ?></span>
+                    <?php foreach($weak as $type => $m): ?>
+                        <div class="type-pill">
+                            <?= $type ?> 
+                            <span class="mult"><?= $m ?>x</span>
+                        </div>
                     <?php endforeach; ?>
                 </div>
             </div>
-        <?php endif; ?>
 
-        <div class="analysis-card danger">
-            <h4>VULNERABLE TO</h4>
-            <div class="type-list">
-                <?php foreach($weak as $type => $m): ?>
-                    <div class="type-pill <?= $type ?>">
-                        <?= $type ?> <span class="mult"><?= $m ?></span>
-                    </div>
-                <?php endforeach; ?>
+            <div class="analysis-card safe">
+                <h4>🛡️ RESISTANCES</h4>
+                <div class="type-list">
+                    <?php foreach($resist as $type => $m): ?>
+                        <div class="type-pill">
+                            <?= $type ?> 
+                            <span class="mult"><?= $m ?>x</span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
 
-        <div class="analysis-card safe">
-            <h4>RESISTANT TO</h4>
-            <div class="type-list">
-                <?php foreach($resist as $type => $m): ?>
-                    <div class="type-pill <?= $type ?>">
-                        <?= $type ?> <span class="mult"><?= $m ?></span>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
+        <a href="pokemon-detail.php?id=<?= $id ?>" class="back-btn">← EXIT ANALYSIS</a>
     </div>
 </body>
 </html>
