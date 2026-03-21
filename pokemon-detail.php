@@ -234,6 +234,38 @@ $stats = [
             transform: scale(1.1); 
         }
 
+        .shiny-btn {
+            background: rgba(255, 255,255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            backdrop-filter: blur(10px);
+            letter-spacing: 1px;
+        }
+
+        .shiny-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateU(-2px);
+        }
+
+        .shiny-btn.active {
+            background: linear-gradient(45deg, #f1c40f, #e67e22);
+            border-color: #fff;
+            color: #000;
+            box-shadow: 0 0 2px rgba(241, 196, 15, 0.6);
+        }
+
+        .sparkle {
+            margin-right: 5px;
+        }
+
         .detail-type-pill.fire     { background: var(--fire);     box-shadow: 0 0 20px rgba(255, 66, 28, 0.5); }
         .detail-type-pill.water    { background: var(--water);    box-shadow: 0 0 20px rgba(41, 128, 239, 0.5); }
         .detail-type-pill.grass    { background: var(--grass);    box-shadow: 0 0 20px rgba(98, 188, 90, 0.5); }
@@ -299,8 +331,15 @@ $stats = [
 
         <div class="visual-section">
             <div class="artwork-container">
-                <img src="<?= $imagePath ?>" alt="<?= $pokemon['name'] ?>">
+                <img id="pokemon-img" src="<?= $imagePath ?>" alt="<?= $pokemon['name'] ?>">
+
+                <button id="shiny-toggle" class="shiny-btn">
+                    <span class="sparkle">✨</span> Shiny Mode
+                </button>
             </div>
+
+            
+
             <span class="id-label">#<?= sprintf('%03d', $pokemon['pokemon_id']) ?></span>
             <h1 class="pokemon-name"><?= $pokemon['name'] ?></h1>
 
@@ -319,7 +358,7 @@ $stats = [
 
         <div class="info-section">
             <div class="glass-card">
-                <h2 style="margin-top: 0; margin-bottom: 30px; font-weight: 300;">Base Statistics</h2>
+                
 
                 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;">
                     <h2 style="margin: 0; font-weight: 300;">Base Statistics</h2>
@@ -375,6 +414,32 @@ $stats = [
                 });
             }, 300);
         });
+
+        const shinyBtn = document.getElementById('shiny-toggle');
+        const pokeImg = document.getElementById('pokemon-img');
+        const pokemonId = <?= $pokemon['pokemon_id'] ?>
+        const defaultUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
+        const shinyUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${pokemonId}.png`;
+
+        let isShiny = false;
+
+        shinyBtn.addEventListener('click', () => {
+            isShiny = !isShiny;
+
+            pokeImg.style.opacity = '0';
+            pokeImg.style.transform = 'scale(0.9) translateY(0)';
+
+            setTimeout(() => {
+                pokeImg.src = isShiny ? shinyUrl : defaultUrl;
+
+                shinyBtn.classList.toggle('active');
+                shinyBtn.innerHTML = isShiny ? '✨ SHINY ACTIVE' : '✨ SHINY MODE';
+
+                pokeImg.style.opacity = '1';
+                pokeImg.style.transform = 'scale(1) translateY(0)';
+            }, 250);
+        });
+
     </script>
 </body>
 </html>
