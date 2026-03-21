@@ -63,9 +63,14 @@ $resultCount = count($pokemonList);
 
         .search-form select {
             background: rgba(255,255,255,0.05) !important;
-            border-radius: 20px;
-            margin-right: 10px;
-            cursor: pointer;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            outline: none;
+            flex: 1;
+            max-width: 150px;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0;
         }
 
         .search-form select option {
@@ -75,15 +80,38 @@ $resultCount = count($pokemonList);
 
         .search-container { max-width: 700px; margin: 40px auto; }
         .search-form { 
-            display: flex; background: var(--card); padding: 8px; 
-            border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+           display: flex;
+           align-items: center;
+           background: rgba(255, 255, 255, 0.05);
+           padding: 5px 10px;
+           border-radius: 50px;
+           border: 1px solid rgba(255, 255, 255, 0.1);
+           backdrop-filter: blur(20px);
         }
-        .search-form input, .search-form select { 
-            background: transparent; border: none; color: white; padding: 10px 15px; outline: none; flex: 1;
+       
+        .search-form input {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 12px 15px;
+            outline: none;
+            flex: 1;
+            font-size: 1rem;
         }
         .search-form button { 
-            background: var(--primary); color: white; border: none; 
-            padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: 600;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .search-form button:hover {
+            filter: brightness(1.2);
+            box-shadow: 0 0 15px var(--primary);
         }
 
         .pokemon-grid {
@@ -315,24 +343,24 @@ $resultCount = count($pokemonList);
             padding: 20px 50px;
         }
 
-        .poke-card:hover:has(.fire)     { box-shadow: 0 20px 40px rgba(255, 66, 28, 0.25); border-color: var(--fire); }
-        .poke-card:hover:has(.water)    { box-shadow: 0 20px 40px rgba(41, 128, 239, 0.25); border-color: var(--water); }
-        .poke-card:hover:has(.grass)    { box-shadow: 0 20px 40px rgba(98, 188, 90, 0.25); border-color: var(--grass); }
-        .poke-card:hover:has(.electric) { box-shadow: 0 20px 40px rgba(241, 196, 15, 0.25); border-color: var(--electric); }
-        .poke-card:hover:has(.psychic)  { box-shadow: 0 20px 40px rgba(155, 89, 182, 0.25); border-color: var(--psychic); }
-        .poke-card:hover:has(.ice)      { box-shadow: 0 20px 40px rgba(93, 173, 226, 0.25); border-color: var(--ice); }
-        .poke-card:hover:has(.dragon)   { box-shadow: 0 20px 40px rgba(80, 61, 163, 0.25); border-color: var(--dragon); }
-        .poke-card:hover:has(.dark)     { box-shadow: 0 20px 40px rgba(44, 62, 80, 0.25); border-color: var(--dark); }
-        .poke-card:hover:has(.fairy)    { box-shadow: 0 20px 40px rgba(233, 30, 99, 0.25); border-color: var(--fairy); }
-        .poke-card:hover:has(.normal)   { box-shadow: 0 20px 40px rgba(149, 165, 166, 0.25); border-color: var(--normal); }
-        .poke-card:hover:has(.fighting) { box-shadow: 0 20px 40px rgba(192, 57, 43, 0.25); border-color: var(--fighting); }
-        .poke-card:hover:has(.poison)   { box-shadow: 0 20px 40px rgba(142, 68, 173, 0.25); border-color: var(--poison); }
-        .poke-card:hover:has(.ground)   { box-shadow: 0 20px 40px rgba(211, 84, 0, 0.25); border-color: var(--ground); }
-        .poke-card:hover:has(.rock)     { box-shadow: 0 20px 40px rgba(123, 141, 147, 0.25); border-color: var(--rock); }
-        .poke-card:hover:has(.bug)      { box-shadow: 0 20px 40px rgba(39, 174, 96, 0.25); border-color: var(--bug); }
-        .poke-card:hover:has(.ghost)    { box-shadow: 0 20px 40px rgba(75, 90, 148, 0.25); border-color: var(--ghost); }
-        .poke-card:hover:has(.steel)    { box-shadow: 0 20px 40px rgba(189, 195, 199, 0.25); border-color: var(--steel); }
-        .poke-card:hover:has(.flying)   { box-shadow: 0 20px 40px rgba(127, 140, 141, 0.25); border-color: var(--flying); }
+        .poke-card:hover.primary-fire     { box-shadow: 0 20px 40px rgba(255, 66, 28, 0.3); border-color: var(--fire); }
+        .poke-card:hover.primary-water    { box-shadow: 0 20px 40px rgba(41, 128, 239, 0.3); border-color: var(--water); }
+        .poke-card:hover.primary-grass    { box-shadow: 0 20px 40px rgba(98, 188, 90, 0.3); border-color: var(--grass); }
+        .poke-card:hover.primary-electric { box-shadow: 0 20px 40px rgba(241, 196, 15, 0.3); border-color: var(--electric); }
+        .poke-card:hover.primary-psychic  { box-shadow: 0 20px 40px rgba(155, 89, 182, 0.3); border-color: var(--psychic); }
+        .poke-card:hover.primary-ice      { box-shadow: 0 20px 40px rgba(93, 173, 226, 0.3); border-color: var(--ice); }
+        .poke-card:hover.primary-dragon   { box-shadow: 0 20px 40px rgba(80, 61, 163, 0.3); border-color: var(--dragon); }
+        .poke-card:hover.primary-dark     { box-shadow: 0 20px 40px rgba(44, 62, 80, 0.3); border-color: var(--dark); }
+        .poke-card:hover.primary-fairy    { box-shadow: 0 20px 40px rgba(233, 30, 99, 0.3); border-color: var(--fairy); }
+        .poke-card:hover.primary-normal   { box-shadow: 0 20px 40px rgba(149, 165, 166, 0.3); border-color: var(--normal); }
+        .poke-card:hover.primary-fighting { box-shadow: 0 20px 40px rgba(192, 57, 43, 0.3); border-color: var(--fighting); }
+        .poke-card:hover.primary-poison   { box-shadow: 0 20px 40px rgba(142, 68, 173, 0.3); border-color: var(--poison); }
+        .poke-card:hover.primary-ground   { box-shadow: 0 20px 40px rgba(211, 84, 0, 0.3); border-color: var(--ground); }
+        .poke-card:hover.primary-rock     { box-shadow: 0 20px 40px rgba(123, 141, 147, 0.3); border-color: var(--rock); }
+        .poke-card:hover.primary-bug      { box-shadow: 0 20px 40px rgba(39, 174, 96, 0.3); border-color: var(--bug); }
+        .poke-card:hover.primary-ghost    { box-shadow: 0 20px 40px rgba(75, 90, 148, 0.3); border-color: var(--ghost); }
+        .poke-card:hover.primary-steel    { box-shadow: 0 20px 40px rgba(189, 195, 199, 0.3); border-color: var(--steel); }
+        .poke-card:hover.primary-flying   { box-shadow: 0 20px 40px rgba(127, 140, 141, 0.3); border-color: var(--flying); }
 
         .filter-btn.active.fire     { background: var(--fire); border-color: white; color: white; box-shadow: 0 0 15px var(--fire); }
         .filter-btn.active.water    { background: var(--water); border-color: white; color: white; box-shadow: 0 0 15px var(--water); }
@@ -422,17 +450,15 @@ $resultCount = count($pokemonList);
         <h1 style="font-size: 3rem; letter-spacing: 2px;">POKÉPEDIA</h1>
     </header>
 
+
     <section class="search-container">
         <form class="search-form" method="GET">
-            <input type="text" name="search" placeholder="Search Pokémon..." value="<?= htmlspecialchars($search) ?>">
-            <select name="type" onchange="this.form.submit()">  
-                <option value="">All Types</option>
-                <?php foreach ($types as $t): ?>
-                    <option value="<?= $t ?>" <?= ($typeFilter == $t) ? 'selected' : '' ?>>
-                        <?= $t ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+            <?php if($typeFilter): ?>
+                <input type="hidden" name="type" value="<?= htmlspecialchars($typeFilter) ?>">
+            <?php endif; ?>
+
+            <span style="margin-left: 15px; opacity: 0.5;">&#128269;</span>
+            <input type="text" name="search" placeholder="Search Pokémon by name..." value="<?= htmlspecialchars($search) ?>">
             <button type="submit">Search</button>
         </form>
     </section>
@@ -469,7 +495,7 @@ $resultCount = count($pokemonList);
         <?php if (count($pokemonList) >0): ?>
             <?php foreach ($pokemonList as $row): ?>
                 <a href="pokemon-detail.php?id=<?= $row['pokemon_id'] ?>" class="card-link">
-                    <div class="poke-card">
+                    <div class="poke-card primary-<?= strtolower($row['type1']) ?>">
                         <span class="id-badge">#<?= sprintf('%03d', $row['pokemon_id']) ?></span>
                         <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/<?= $row['pokemon_id'] ?>.png" loading="lazy">
 
