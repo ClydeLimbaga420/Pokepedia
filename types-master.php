@@ -42,47 +42,68 @@ $allTypes = array_keys($chart);
             padding: 40px;
         }
 
+        .page-title {
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 50px;
+        }
+
         .types-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
-            padding: 20px;
         }
 
         .type-master-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            overflow: hidden;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .type-master-card:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
         }
 
         .type-header {
-            padding: 15px;
+            padding: 25px 15px;
             text-align: center;
-            font-weight: 900;
-            letter-spacing: 2px;
+        }
+
+        .type-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(0,0,0,0.5);
         }
 
         .type-body {
             padding: 20px;
+            flex-grow: 1;
         }
 
+
         .stat-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 15px;
         }
 
         .stat-group small {
             display: block;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.6rem;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
+            font-weight: 800;
+            font-size: 0.65rem;
+            margin-bottom: 10px;
+            opacity: 0.6;
+            letter-spacing: 1.5px;
         }
 
         .mini-pills {
@@ -92,13 +113,28 @@ $allTypes = array_keys($chart);
         }
 
         .pill {
-            font-size: 0.65rem;
-            padding: 4px 8px;
-            border-radius: 6px;
+            font-size: 0.7rem;
+            padding: 6px 12px;
+            border-radius: 8px;
             text-transform: uppercase;
             font-weight: bold;
             background: rgba(255, 255, 255, 0.1);
-            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .danger-text {
+            color: #ff421c;
+        }
+
+        .safe-text {
+            color: #62bc5a;
+        }
+
+        i {
+            font-size: 0.6rem;
+            opacity: 0.8;
+            font-style: normal;
+            display: block;
         }
 
         .border-normal { border-bottom: 4px solid #A8A878; }
