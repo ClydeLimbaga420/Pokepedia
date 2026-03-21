@@ -266,6 +266,41 @@ $stats = [
             margin-right: 5px;
         }
 
+        .battle-link, .battle-fab {
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--<?= $primaryType ?>);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .battler-link:hover, .battle-fab:hover {
+            background: var(--<?= $primaryType ?>);
+            box-shadow: 0 0 20px var(--<?= $primaryType ?>);
+            color: #000;
+            transform: translateY(-3px);
+        }
+
+        @keyframes pulse-radar {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+            } 70% {
+                box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+            } 100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
+        }
+
+        .battle-fab {
+            animation: pulse-radar 2s infinite;
+        }
+
         .detail-type-pill.fire     { background: var(--fire);     box-shadow: 0 0 20px rgba(255, 66, 28, 0.5); }
         .detail-type-pill.water    { background: var(--water);    box-shadow: 0 0 20px rgba(41, 128, 239, 0.5); }
         .detail-type-pill.grass    { background: var(--grass);    box-shadow: 0 0 20px rgba(98, 188, 90, 0.5); }
@@ -333,9 +368,15 @@ $stats = [
             <div class="artwork-container">
                 <img id="pokemon-img" src="<?= $imagePath ?>" alt="<?= $pokemon['name'] ?>">
 
+                     <a href="pokemon-battle.php?id=<?= $id ?>" class="battle-fab">
+                    <span class="radar-icon"></span> ANALYZE WEAKNESS
+                </a>
+
                 <button id="shiny-toggle" class="shiny-btn">
                     <span class="sparkle">✨</span> Shiny Mode
                 </button>
+
+               
             </div>
 
             
@@ -367,6 +408,14 @@ $stats = [
                         <span style="font-size: 1.5rem; font-weight: 800; color: <?= $tierColor ?>;"><?= $baseStatTotal ?></span>
                         <span style="font-size: 0.8rem; font-weight: 600; margin-left: 5px; opacity: 0.8;"><?= $tier ?></span>
                     </div>
+
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0; font-weight: 300;">Base Statistics</h2>
+                    <a href="pokemon-battle.php?id=<?= $id ?>" class="battle-link">
+                        BATTLE ANALYSIS
+                    </a>
 
                 </div>
                 

@@ -1,144 +1,130 @@
-<?php 
+<?php
 include 'config.php';
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
-
 $stmt = $pdo->prepare("SELECT * FROM pokemon WHERE pokemon_id = ?");
 $stmt->execute([$id]);
 $pokemon = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$pokemon) {
-    header("Location: index.php");
-    exit;
+$types = [strtolower($pokemon['type1'])];
+if (!empty($pokemon['type2'])) {
+    $types[] = strtolower($pokemon['type2']);
 }
 
-$typeChart = [
-    'normal' => [
-        'weak' => ['fighting'],
-        'resist' => [],
-        'immune' => ['ghost']
-    ],
-    'fire' => [
-        'weak' => ['water', 'ground', 'rock'],
-        'resist' => ['fire', 'grass', 'ice', 'bug', 'steel', 'fairy'],
-        'immune' => []
-    ],
-    'water' => [
-        'weak' => ['electric', 'grass'],
-        'resist' => ['fire', 'water', 'ice', 'steel'],
-        'immune' => []
-    ],
-    'electric' => [
-        'weak' => ['ground'],
-        'resist' => ['electric', 'flying', 'steel'],
-        'immune' => []
-    ],
-    'grass' => [
-        'weak' => ['fire', 'ice', 'poison', 'flying', 'bug'],
-        'resist' => ['water', 'electric', 'grass', 'ground'],
-        'immune' => []
-    ],
-    'ice' => [
-        'weak' => ['fire', 'fighting', 'rock', 'steel'],
-        'resist' => ['ice'],
-        'immune' => []
-    ],
-    'fighting' => [
-        'weak' => ['flying', 'psychic', 'fairy'],
-        'resist' => ['bug', 'rock', 'dark'],
-        'immune' => []
-    ],
-    'poison' => [
-        'weak' => ['ground', 'psychic'],
-        'resist' => ['grass', 'fighting', 'poison', 'bug', 'fairy'],
-        'immune' => []
-    ],
-    'ground' => [
-        'weak' => ['water', 'grass', 'ice'],
-        'resist' => ['poison', 'rock'],
-        'immune' => ['electric']
-    ],
-    'flying' => [
-        'weak' => ['electric', 'ice', 'rock'],
-        'resist' => ['grass', 'fighting', 'bug'],
-        'immune' => ['ground']
-    ],
-    'psychic' => [
-        'weak' => ['bug', 'ghost', 'dark'],
-        'resist' => ['fighting', 'psychic'],
-        'immune' => []
-    ],
-    'bug' => [
-        'weak' => ['fire', 'flying', 'rock'],
-        'resist' => ['grass', 'fighting', 'ground'],
-        'immune' => []
-    ],
-    'rock' => [
-        'weak' => ['water', 'grass', 'fighting', 'ground', 'steel'],
-        'resist' => ['normal', 'fire', 'poison', 'flying'],
-        'immune' => []
-    ],
-    'ghost' => [
-        'weak' => ['ghost', 'dark'],
-        'resist' => ['poison', 'bug'],
-        'immune' => ['normal', 'fighting']
-    ],
-    'dragon' => [
-        'weak' => ['ice', 'dragon', 'fairy'],
-        'resist' => ['fire', 'water', 'electric', 'grass'],
-        'immune' => []
-    ],
-    'dark' => [
-        'weak' => ['fighting', 'bug', 'fairy'],
-        'resist' => ['ghost', 'dark'],
-        'immune' => ['psychic']
-    ],
-    'steel' => [
-        'weak' => ['fire', 'fighting', 'ground'],
-        'resist' => ['normal', 'grass', 'ice', 'flying', 'psychic', 'bug', 'rock', 'dragon', 'steel', 'fairy'],
-        'immune' => ['poison']
-    ],
-    'fairy' => [
-        'weak' => ['poison', 'steel'],
-        'resist' => ['fighting', 'bug', 'dark'],
-        'immune' => ['dragon']
-    ],
+$chart = [
+    'normal'   => ['rock'=>0.5, 'ghost'=>0, 'steel'=>0.5],
+    'fire'     => ['fire'=>0.5, 'water'=>0.5, 'grass'=>2, 'ice'=>2, 'bug'=>2, 'rock'=>0.5, 'dragon'=>0.5, 'steel'=>2],
+    'water'    => ['fire'=>2, 'water'=>0.5, 'grass'=>0.5, 'ground'=>2, 'rock'=>2, 'dragon'=>0.5],
+    'grass'    => ['fire'=>0.5, 'water'=>2, 'grass'=>0.5, 'poison'=>0.5, 'ground'=>2, 'flying'=>0.5, 'bug'=>0.5, 'rock'=>2, 'dragon'=>0.5, 'steel'=>0.5],
+    'electric' => ['water'=>2, 'grass'=>0.5, 'electric'=>0.5, 'ground'=>0, 'flying'=>2, 'dragon'=>0.5],
+    'ice'      => ['fire'=>0.5, 'water'=>0.5, 'grass'=>2, 'ice'=>0.5, 'ground'=>2, 'flying'=>2, 'dragon'=>2, 'steel'=>0.5],
+    'fighting' => ['normal'=>2, 'ice'=>2, 'poison'=>0.5, 'flying'=>0.5, 'psychic'=>0.5, 'bug'=>0.5, 'rock'=>2, 'ghost'=>0, 'dark'=>2, 'steel'=>2, 'fairy'=>0.5],
+    'poison'   => ['grass'=>2, 'poison'=>0.5, 'ground'=>0.5, 'rock'=>0.5, 'ghost'=>0.5, 'steel'=>0, 'fairy'=>2],
+    'ground'   => ['fire'=>2, 'grass'=>0.5, 'electric'=>2, 'poison'=>2, 'flying'=>0, 'bug'=>0.5, 'rock'=>2, 'steel'=>2],
+    'flying'   => ['grass'=>2, 'electric'=>0.5, 'fighting'=>2, 'bug'=>2, 'rock'=>0.5, 'steel'=>0.5],
+    'psychic'  => ['fighting'=>2, 'poison'=>2, 'psychic'=>0.5, 'dark'=>0, 'steel'=>0.5],
+    'bug'      => ['fire'=>0.5, 'grass'=>2, 'fighting'=>0.5, 'poison'=>0.5, 'flying'=>0.5, 'psychic'=>2, 'ghost'=>0.5, 'dark'=>2, 'steel'=>0.5, 'fairy'=>0.5],
+    'rock'     => ['fire'=>2, 'ice'=>2, 'fighting'=>0.5, 'ground'=>0.5, 'flying'=>2, 'bug'=>2, 'steel'=>0.5],
+    'ghost'    => ['normal'=>0, 'psychic'=>2, 'ghost'=>2, 'dark'=>0.5],
+    'dragon'   => ['dragon'=>2, 'steel'=>0.5, 'fairy'=>0],
+    'dark'     => ['fighting'=>0.5, 'psychic'=>2, 'ghost'=>2, 'dark'=>0.5, 'fairy'=>0.5],
+    'steel'    => ['fire'=>0.5, 'water'=>0.5, 'electric'=>0.5, 'ice'=>2, 'rock'=>2, 'steel'=>0.5, 'fairy'=>2],
+    'fairy'    => ['fire'=>0.5, 'fighting'=>2, 'poison'=>0.5, 'dragon'=>2, 'dark'=>2, 'steel'=>0.5]
 ];
 
-$primaryType = strtoLower($pokemon['type1']);
-$weaknesses = $typeChart[$primaryType]['weak'] ?? [];
-$resistances = $typeChart[$primaryType]['resist'] ?? [];
-?>
+$allTypes = array_keys($chart);
+$results = [];
 
+foreach ($allTypes as $attacker) {
+    $multiplier = 1.0;
+    foreach ($types as $defender) {
+        if (isset($chart[$attacker][$defender])) {
+            $multiplier *= $chart[$attacker][$defender];
+        }
+    }
+
+    if( $multiplier != 1.0 ) {
+        $results[$attacker] = $multiplier;
+    }
+}
+
+asort($results);
+    $weak = array_filter($results, fn($m) => $m > 1);
+    $resist = array_filter($results, fn($m) => $m < 1 && $m > 0);
+    $immune = array_filter($results, fn($m) => $m == 0);
+
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Types</title>
+
+    <style>
+        
+        :root {
+            --bg-dark: #050505;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --danger: #ff421c;
+            --safe: #82bc5a;
+            --immune: #2980ef;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0..05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+    
+    </style>
+
 </head>
 <body>
-    <div class="container">
-        <h1 style="text-align:center; letter-spacing: 5px;">BATTLE ANALYSIS: <?= strtoupper($pokemon['name']) ?></h1>
-
-        <div class="battle-container">
-            <div class="advantage-box"> 
-                 <h3>WEAK AGAINST (2x Damage)</h3>
-                 <?php foreach($weaknesses as $w): ?>
-                    <span class="type-icon" style="background: var(--<?= $w ?>)"></span>
-                <?php endforeach; ?>
+    <div class="battle-grid">
+        <?php if(!empty($immune)): ?>
+            <div class="analysis-card immunity">
+                <h4>TOTAL IMMUNITY</h4>
+                <div class="type-list">
+                    <?php foreach($immune as $type => $m): ?>
+                        <span class="type-pill <?= $type ?>"><?= $type ?></span>
+                    <?php endforeach; ?>
+                </div>
             </div>
+        <?php endif; ?>
 
-            <div class="resistance-box">
-                <h3> RESISTANT TO (0.5x Damage)</h3>
-                <?php foreach($resistances as $r): ?>
-                    <span class="type-icon" style="background: var(--<?= $r ?>)"><?= $r ?></span>
+        <div class="analysis-card danger">
+            <h4>VULNERABLE TO</h4>
+            <div class="type-list">
+                <?php foreach($weak as $type => $m): ?>
+                    <div class="type-pill <?= $type ?>">
+                        <?= $type ?> <span class="mult"><?= $m ?></span>
+                    </div>
                 <?php endforeach; ?>
             </div>
         </div>
 
-        <a href="pokemon-detail.php?id=<?= $id ?>" class="btn" style="display: block; text-align: center; margin-top: 40px;">← CLOSE SCANNER</a>
-        <div>
+        <div class="analysis-card safe">
+            <h4>RESISTANT TO</h4>
+            <div class="type-list">
+                <?php foreach($resist as $type => $m): ?>
+                    <div class="type-pill <?= $type ?>">
+                        <?= $type ?> <span class="mult"><?= $m ?></span>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
     </div>
 </body>
 </html>
