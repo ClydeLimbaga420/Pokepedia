@@ -587,6 +587,8 @@ if ($baseStatTotal >= 600) {
                     <div class="mini-card">
                         <span>ABILITY</span>
                         <p style="font-size: 0.9rem;"><?= ucfirst($pokemon['ability1']) ?></p>
+                        <p style="font-size: 0.9rem;"><?= ucfirst($pokemon['ability2']) ?></p>
+                        <p style="font-size: 0.9rem;"><?= ucfirst($pokemon['hidden_ability']) ?></p>
                     </div>
                 </div>
             </div>
