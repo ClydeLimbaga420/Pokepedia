@@ -317,6 +317,12 @@ $stats = [
             transition: 0.3s;
         }
 
+        .info-circle:hover {
+            background: var(--<?= $primaryType ?>);
+            border-color: white;
+            transform: scale(1.2);
+        }
+
         .detail-type-pill.fire     { background: var(--fire);     box-shadow: 0 0 20px rgba(255, 66, 28, 0.5); }
         .detail-type-pill.water    { background: var(--water);    box-shadow: 0 0 20px rgba(41, 128, 239, 0.5); }
         .detail-type-pill.grass    { background: var(--grass);    box-shadow: 0 0 20px rgba(98, 188, 90, 0.5); }
@@ -419,23 +425,22 @@ $stats = [
             <div class="glass-card">
                 
 
-                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;">
-                    <h2 style="margin: 0; font-weight: 300;">Base Statistics</h2>
-                    <div style="text-align: right">
-                        <span style="font-size: 0.7rem; opacity: 0.5; display: block">Base Stat Total</span>
-                        <span style="font-size: 1.5rem; font-weight: 800; color: <?= $tierColor ?>;"><?= $baseStatTotal ?></span>
-                        <span style="font-size: 0.8rem; font-weight: 600; margin-left: 5px; opacity: 0.8;"><?= $tier ?></span>
-                    </div>
-
-                </div>
-
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2 style="margin: 0; font-weight: 300;">Base Statistics</h2>
-                    <a href="pokemon-battle.php?id=<?= $id ?>" class="battle-link">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;">
+                <div>
+                    <h2 style="margin: 0; font-weight: 300;">Base Stats</h2>
+                    <a href="pokemon-battle.php?id=<?= $id ?>" class="battle-link" style="margin-top: 5px;">
                         BATTLE ANALYSIS
-                    </a>
 
+                    </a>
                 </div>
+
+            </div>
+
+            <div style="text-align: right">
+                    <span style="font-size: 0.7rem; opacity: 0.5; display: block;">BST</span>
+                    <span style="font-size: 1.5rem; font-weight: 800; color: <?= $tierColor ?>;"><?= $baseStatTotal ?></span>
+                    <span style="font-size: 0.8rem; font-weight: 600; margin-left: 5px; opacity: 0.8;"><?= $tier ?></span>
+            </div>
                 
                 <?php 
                 
@@ -448,7 +453,7 @@ $stats = [
                         <span class="stat-label"><?= $label ?></span>
                         <span class="stat-number"><?= $value ?></span>
                         <div class="stat-bar-bg">
-                            <div class="stat-bar-fill" data-percent="<?= getStatPercent($value) ?>%"></div>
+                            <div class="stat-bar-fill" style="width: 0;" data-percent="<?= round(getStatPercent($value)) ?>%"></div>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -473,13 +478,16 @@ $stats = [
 
     <script>
         
-        window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('load', () => {
             const bars = document.querySelectorAll('.stat-bar-fill');
-            setTimeout(() => {
-                bars.forEach(bar => {
-                    bar.style.width = bar.getAttribute('data-percent');
-                });
-            }, 300);
+
+            bars.forEach(bar => {
+                const percentage = bar.getAttribute('data-percent');
+                void bar.offsetWidth;
+                if (percentage) {
+                    bar.style.width = percentage;
+                }
+            });
         });
 
         const shinyBtn = document.getElementById('shiny-toggle');

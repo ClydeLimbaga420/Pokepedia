@@ -161,6 +161,10 @@ $allTypes = array_keys($chart);
     
     <h1 class="page-title">Type Codex</h1>
 
+    <div style="padding: 20px; text-align: center;">
+                    <a href="index.php" class="btn" style="opacity: 0.5; text-decoration: none; color: white; font-size: 0.8rem;" > ← BACK TO POKÉDEX</a>
+                </div>
+
 <div class="types-grid">
     <?php foreach ($allTypes as $type): ?>
         <div class="type-master-card border-<?= $type ?>">
@@ -206,10 +210,16 @@ $allTypes = array_keys($chart);
                         ?>
                     </div>
                 </div>
+
+                
             </div>
         </div>
+
+        
     <?php endforeach; ?>
 </div>
+
+
 
 </body>
 </html>
