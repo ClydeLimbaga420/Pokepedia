@@ -343,6 +343,31 @@ $resultCount = count($pokemonList);
             padding: 20px 50px;
         }
 
+        .codex-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .codex-btn:hover {
+            background: white;
+            color: black;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+        }
+
+
         .poke-card:hover.primary-fire     { box-shadow: 0 20px 40px rgba(255, 66, 28, 0.3); border-color: var(--fire); }
         .poke-card:hover.primary-water    { box-shadow: 0 20px 40px rgba(41, 128, 239, 0.3); border-color: var(--water); }
         .poke-card:hover.primary-grass    { box-shadow: 0 20px 40px rgba(98, 188, 90, 0.3); border-color: var(--grass); }
@@ -445,6 +470,13 @@ $resultCount = count($pokemonList);
     </style>
 </head>
 <body>
+
+
+    <div class="top-nav">
+        <a href="types-master.php" class="codex-btn"> 
+            <span class="icon">📜</span> TYPE CODEX
+        </a>
+    </div>
 
     <header style="text-align: center; margin-bottom: 20px;">
         <h1 style="font-size: 3rem; letter-spacing: 2px;">POKÉPEDIA</h1>

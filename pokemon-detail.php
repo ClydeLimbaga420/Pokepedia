@@ -301,6 +301,22 @@ $stats = [
             animation: pulse-radar 2s infinite;
         }
 
+        .info-circle {
+            display: inline-flex;
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            font-size: 0.7rem;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            transition: 0.3s;
+        }
+
         .detail-type-pill.fire     { background: var(--fire);     box-shadow: 0 0 20px rgba(255, 66, 28, 0.5); }
         .detail-type-pill.water    { background: var(--water);    box-shadow: 0 0 20px rgba(41, 128, 239, 0.5); }
         .detail-type-pill.grass    { background: var(--grass);    box-shadow: 0 0 20px rgba(98, 188, 90, 0.5); }
@@ -388,6 +404,8 @@ $stats = [
                 <span class="detail-type-pill <?= $primaryType ?>">
                     <?= $pokemon['type1'] ?>
                 </span>
+
+                <a href="types-master.php" class="info-circle" title="View Type Chart">?</a>
 
                 <?php if(!empty($pokemon['type2'])): ?>
                     <span class="detail-type-pill <?= strtolower($pokemon['type2']) ?>">
