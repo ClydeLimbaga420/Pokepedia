@@ -1,26 +1,6 @@
 <?php
 include 'config.php';
 
-$stmtPrev = $pdo->prepare("
-    SELECT p.pokemon_id, p.name, e.method, e.requirement
-    FROM pokemon_evolutions e
-    JOIN pokemon p ON e.from_id = p.pokemon_id
-    WHERE e.to_id = ?
-");
-
-$stmtPrev->execute([$id]);
-$parent = $stmtPrev->fetch();
-
-$stmtNext = $pdo->prepare("
-    SELECT p.pokemon_id, p.name, e.method, e.requirement
-    FROM pokemon_evolutions e
-    JOIN pokemon p ON e.to_id = p.pokemon_id
-    WHERE e.from_id = ?
-");
-
-$stmtNext->execute([$id]);
-$children = $stmtNext->fetchAll();
-
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
 
 $stmt = $pdo->prepare("SELECT * FROM pokemon WHERE pokemon_id = ?");
@@ -32,6 +12,24 @@ if (!$pokemon) {
     exit;
 }
 
+$stmtPrev = $pdo->prepare("
+    SELECT p.pokemon_id, p.name, e.method, e.requirement
+    FROM pokemon_evolutions e
+    JOIN pokemon p ON e.from_id = p.pokemon_id
+    WHERE e.to_id = ?
+");
+$stmtPrev->execute([$id]);
+$parent = $stmtPrev->fetch();
+
+$stmtNext = $pdo->prepare("
+    SELECT p.pokemon_id, p.name, e.method, e.requirement
+    FROM pokemon_evolutions e
+    JOIN pokemon p ON e.to_id = p.pokemon_id
+    WHERE e.from_id = ?
+");
+$stmtNext->execute([$id]);
+$children = $stmtNext->fetchAll();
+
 $primaryType = strtolower($pokemon['type1']);
 $imagePath = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" . $pokemon['pokemon_id'] . ".png";
 
@@ -40,28 +38,25 @@ function getStatPercent($val) {
 }
 
 $stats = [
-                    'HP' => $pokemon['hp'],
-                    'Attack' => $pokemon['attack'],
-                    'Defense' => $pokemon['defense'],
-                    'Sp. Atk' => $pokemon['special_attack'],
-                    'Sp. Def' => $pokemon['special_defense'],
-                    'Speed' => $pokemon['speed']
-                ];
+    'HP' => $pokemon['hp'],
+    'Attack' => $pokemon['attack'],
+    'Defense' => $pokemon['defense'],
+    'Sp. Atk' => $pokemon['special_attack'],
+    'Sp. Def' => $pokemon['special_defense'],
+    'Speed' => $pokemon['speed']
+];
 
-                $baseStatTotal = array_sum($stats);
+$baseStatTotal = array_sum($stats);
 
-                if ($baseStatTotal >= 600) {
-                    $tier = "S-Tier";
-                    $tierColor = "#ff421c";
-                } elseif ($baseStatTotal >= 500) {
-                        $tier = "A-Tier";
-                        $tierColor = "#f1c40f";
-                    } else {
-                        $tier = "B-Tier";
-                        $tierColor = "#95a5a6";
-                    }
+// Tier Logic
+if ($baseStatTotal >= 600) {
+    $tier = "S-Tier"; $tierColor = "#ff421c";
+} elseif ($baseStatTotal >= 500) {
+    $tier = "A-Tier"; $tierColor = "#f1c40f";
+} else {
+    $tier = "B-Tier"; $tierColor = "#95a5a6";
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -343,6 +338,108 @@ $stats = [
             transform: scale(1.2);
         }
 
+        .evolution-section {
+            width: 100%;
+            margin-top: 50px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .evo-flex {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .evo-card {
+            text-decoration: none;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .evo-img-wrapper {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+
+        .evo-card img {
+            width: 70%;
+            opacity: 0.5;
+            filter: grayscale(1);
+            transition: 0.3s;
+        }
+
+        .evo-card:hover img {
+            opacity: 1;
+            filter: grayscale(0);
+            transform: scale(1.1);
+        }
+
+        .evo-card.active-evo img {
+            opacity: 1;
+            filter: grayscale(0);
+        }
+
+        .evo-card p {
+            margin: 0;
+            font-size: 0.6rem;
+            opacity: 0.6;
+            color: white;
+        }
+
+        .evo-card p span {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 800;
+            opacity: 1;
+        }
+
+        .evo-connector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.5;
+        }
+
+        .method-label {
+            font-size: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .evo-arrow {
+            font-size: 1.2rem;
+            margin: -5px 0;
+        }
+
+        .req-val {
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: var(--<?= $primaryType ?>);
+        }
+
+        .evo-branch-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .evo-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         .detail-type-pill.fire     { background: var(--fire);     box-shadow: 0 0 20px rgba(255, 66, 28, 0.5); }
         .detail-type-pill.water    { background: var(--water);    box-shadow: 0 0 20px rgba(41, 128, 239, 0.5); }
         .detail-type-pill.grass    { background: var(--grass);    box-shadow: 0 0 20px rgba(98, 188, 90, 0.5); }
@@ -494,9 +591,8 @@ $stats = [
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="evolution-section">
+         <div class="evolution-section">
          <h3 style="text-transform: uppercase; letter-spacing: 3px; opacity: 0.5; font-size: 0.8rem; margin-bottom: 30px; text-align: center;">Evolutionary Chain</h3>
 
          <div class="evo-flex">
@@ -545,6 +641,10 @@ $stats = [
          </div>
     </div>
 
+
+    </div>
+
+   
     <script>
         
         window.addEventListener('load', () => {
