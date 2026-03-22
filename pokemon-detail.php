@@ -1,6 +1,26 @@
 <?php
 include 'config.php';
 
+$stmtPrev = $pdo->prepare("
+    SELECT p.pokemon_id, p.name, e.method, e.requirement
+    FROM pokemon_evolutions e
+    JOIN pokemon p ON e.from_id = p.pokemon_id
+    WHERE e.to_id = ?
+");
+
+$stmtPrev->execute([$id]);
+$parent = $stmtPrev->fetch();
+
+$stmtNext = $pdo->prepare("
+    SELECT p.pokemon_id, p.name, e.method, e.requirement
+    FROM pokemon_evolutions e
+    JOIN pokemon p ON e.to_id = p.pokemon_id
+    WHERE e.from_id = ?
+");
+
+$stmtNext->execute([$id]);
+$children = $stmtNext->fetchAll();
+
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
 
 $stmt = $pdo->prepare("SELECT * FROM pokemon WHERE pokemon_id = ?");
@@ -474,6 +494,55 @@ $stats = [
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="evolution-section">
+         <h3 style="text-transform: uppercase; letter-spacing: 3px; opacity: 0.5; font-size: 0.8rem; margin-bottom: 30px; text-align: center;">Evolutionary Chain</h3>
+
+         <div class="evo-flex">
+            <?php if($parent): ?>
+                <a href="pokemon-detail.php?id=<?= $parent['pokemon_id'] ?>" class="evo-card">
+                    <div class="evo-img-wrapper">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/<?= $parent['pokemon_id'] ?>.png">
+                    </div>
+                    <p>#<?= sprintf('%03d', $parent['pokemon_id']) ?> <span><?= strtoupper($parent['name']) ?></span></p>
+                </a>
+
+                <div class="evo-connector">
+                    <span class="method-label"><?= $parent['method'] ?></span>
+                    <div class="evo-arrow">→</div>
+                    <span class="req-val"><?= $parent['requirement'] ?></span>
+                </div>
+            <?php endif; ?>
+
+            <div class="evo-card active-evo">
+                <div class="evo-img-wrapper" style="border: 2px solid var(--<?= $primaryType ?>); background: rgba(255, 255, 255, 0.08);">
+                   <img src="<?= $imagePath ?>" style="filter: grayscale(0); opacity: 1;">
+                </div>
+                <p style="color: var(--<?= $primaryType ?>); font-weight: 800;">CURRENT</p>
+            </div>
+
+            <?php if($children): ?>
+                <div class="evo-branch-container">
+                    <?php foreach($children as $child): ?>
+                        <div class="evo-row">
+                            <div class="evo-connector">
+                                <span class="method-label"><?= $child['method'] ?></span>
+                                <div class="evo-arrow">→</div>
+                                <span class="req-val"><?= $child['requirement'] ?></span>
+                            </div>
+
+                            <a href="pokemon-detail.php?id=<?= $child['pokemon_id'] ?>" class="evo-card">
+                                <div class="evo-img-wrapper">
+                                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/<?= $child['pokemon_id'] ?>.png">
+                                </div>
+                                <p>#<?= sprintf('%03d', $child['pokemon_id']) ?><span><?= strtoupper($child['name']) ?></span></p>
+                            </a>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+         </div>
     </div>
 
     <script>
