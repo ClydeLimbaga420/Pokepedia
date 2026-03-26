@@ -62,15 +62,17 @@ $resultCount = count($pokemonList);
         }
 
         .search-form select {
-            background: rgba(255,255,255,0.05) !important;
+            background: transparent !important;
             border: none;
             color: white;
-            padding: 10px 15px;
+            padding: 0 15px;
             outline: none;
-            flex: 1;
-            max-width: 150px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
             border-left: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
         }
 
         .search-form select option {
@@ -107,6 +109,7 @@ $resultCount = count($pokemonList);
             cursor: pointer;
             font-weight: 600;
             transition: 0.3s;
+            margin-left: 10px;
         }
 
         .search-form button:hover {
@@ -472,9 +475,12 @@ $resultCount = count($pokemonList);
 <body>
 
 
-    <div class="top-nav">
+    <div class="top-nav" style="display: flex; gap: 15px; margin-bottom: 20px;">
         <a href="types-master.php" class="codex-btn"> 
             <span class="icon">📜</span> TYPE CODEX
+        </a>
+        <a href="type-search.php" class="codex-btn search-alt">
+            <span class="icon">🔍</span> ADVANCED TYPE SEARCH
         </a>
     </div>
 
@@ -484,14 +490,21 @@ $resultCount = count($pokemonList);
 
 
     <section class="search-container">
-        <form class="search-form" method="GET">
-            <?php if($typeFilter): ?>
-                <input type="hidden" name="type" value="<?= htmlspecialchars($typeFilter) ?>">
-            <?php endif; ?>
+        <form class="search-form" method="GET" action="index.php">
+            <span style="margin-left: 15px; opacity: 0.5;">🔍</span>
 
-            <span style="margin-left: 15px; opacity: 0.5;">&#128269;</span>
-            <input type="text" name="search" placeholder="Search Pokémon by name..." value="<?= htmlspecialchars($search) ?>">
-            <button type="submit">Search</button>
+            <input type="text" name="search" placeholder="Search by name..." value="<?= htmlspecialchars($search) ?>">
+
+            <select name="type">
+                <option value="">All Types</option>
+                <?php foreach ($types as $t): ?>
+                    <option value="<?= $t ?>" <?= ($typeFilter == $t) ? 'selected' : '' ?>>
+                        <?= $t ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
+            <button type="submit">GO</button>
         </form>
     </section>
 
