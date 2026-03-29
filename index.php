@@ -482,6 +482,9 @@ $resultCount = count($pokemonList);
         <a href="type-search.php" class="codex-btn search-alt">
             <span class="icon">🔍</span> ADVANCED TYPE SEARCH
         </a>
+        <a href="type-stats.php" class="codex-btn stats-alt">
+            <span class="icon">📊</span> TYPE CHART
+        </a>
     </div>
 
     <header style="text-align: center; margin-bottom: 20px;">
