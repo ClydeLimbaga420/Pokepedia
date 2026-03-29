@@ -56,5 +56,50 @@ foreach ($typeLabels as $label) {
 
     <a href="index.php" class="back-btn">← BACK TO GALLERY</a>
 
+
+    <script>
+        const ctx = document.getElementById('pokemonTypeChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: <?php echo json_encode($typeLabels); ?>,
+                datasets: [{
+                    data: <?php echo json_encode($typeCounts); ?>,
+                    backgroundColor: <?php echo json_encode($backgroundColors); ?>,
+                    borderWidth: 2,
+                    borderColor: '#0f0f0f',
+                    hoverOffset: 20
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: 'rgba(255, 255, 255, 0.7)',
+                            font: {
+                                family: 'Poppins',
+                                size: 10
+                            },
+                            padding: 20
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(item) {
+                                let sum = item.dataset.data.reduce((a, b) => a + b, 0);
+                                let value = item.raw;
+                                let percentage = ((value / sum) * 100).toFixed(1);
+                                return `${item.label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                cutout: '65%'
+            }
+
+        });
+    </script>
 </body>
 </html>
